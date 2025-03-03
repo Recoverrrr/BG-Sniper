@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BG Sniper 𖣓</title>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    body {
+      font-family: "Super Normal", monospace, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+      animation: fadeIn 1.25s ease-out;
+    }
+    :root {
+      --title-color-light: #030303;
+      --text-color-light: #030303;
+      --title-color-dark: #eee;
+      --text-color-dark: #f5f5f5;
+      --button-bg: #007BFF;
+      --button-bg-hover: #006AE6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      color: var(--title-color-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+    p, label, span, details, summary {
+      color: var(--text-color-light);
+      transition: color 0.3s;
+    }
+    .controls,
+    .settings,
+    .mode-toggle {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .controls input[type="file"] {
+      margin: 10px;
+      cursor: pointer;
+    }
+    .controls button {
+      font-family: "Super Normal", monospace, sans-serif;
+      margin: 10px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: var(--button-bg);
+      color: #fff;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .controls button:hover {
+      background-color: var(--button-bg-hover);
+      transform: scale(1.03);
+    }
+    .image-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .preview {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+    .preview h3 {
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    canvas {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #downloadButton {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #downloadButton a {
+      padding: 12px 24px;
+      background-color: var(--button-bg);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    #downloadButton a:hover {
+      background-color: var(--button-bg-hover);
+      transform: scale(1.03);
+    }
+    .settings-panel {
+      margin: 0 auto;
+      max-width: 400px;
+      text-align: left;
+      background: #eee;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .settings-panel label {
+      display: inline-block;
+      width: 140px;
+      text-align: right;
+      margin-right: 10px;
+    }
+    .settings-panel input[type="range"] {
+      vertical-align: middle;
+      margin-top: 5px;
+      width: 150px;
+    }
+    .settings-panel .value-display {
+      font-weight: bold;
+      margin-left: 5px;
+    }
+    .dark-mode {
+      background-color: #333;
+      color: var(--text-color-dark);
+    }
+    .dark-mode .container {
+      background-color: #444;
+      color: var(--text-color-dark);
+    }
+    .dark-mode h1 {
+      color: var(--title-color-dark);
+      text-shadow: 1px 1px 2px black;
+    }
+    .dark-mode .settings-panel {
+      background-color: #555;
+    }
+    .dark-mode canvas {
+      border-color: #666;
+    }
+    .dark-mode label, 
+    .dark-mode span, 
+    .dark-mode details, 
+    .dark-mode summary {
+      color: var(--text-color-dark);
+    }
+    .dark-mode h3,
+    .dark-mode p,
+    .dark-mode label,
+    .dark-mode span,
+    .dark-mode details,
+    .dark-mode summary,
+    .dark-mode button,
+    .dark-mode a {
+      text-shadow: 1px 1px 2px black;
+    }
+    .dark-mode #toggleDarkMode,
+    .dark-mode #processButton {
+      text-shadow: none;
+    }
+    .social-links {
+      max-width: 800px;
+      margin: 20px auto 0;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .social-links img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .social-links img:hover {
+      transform: scale(1.1);
+    }
+    #spinner {
+      border: 4px solid rgba(0,0,0,0.1);
+      border-left-color: var(--button-bg);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+    button, a {
+      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    button:hover, a:hover {
+      transform: scale(1.03);
+    }
+    @media (max-width: 600px) {
+      .container {
+        width: 100%;
+        padding: 10px;
+      }
+      .controls input[type="file"],
+      .controls button {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 title="This is the title for our background remover tool">BG Sniper 𖣓</h1>
+    <div class="mode-toggle">
+      <button id="toggleDarkMode" title="Click to switch between light and dark mode">Toggle Dark Mode</button>
+    </div>
+    <div class="controls" title="Upload your image and remove the background">
+      <input type="file" id="imageUpload" accept="image/*" title="Select an image to load">
+      <button id="processButton" title="Click to remove the background from the image">Remove Background</button>
+    </div>
+    <div id="spinner"></div>
+    <div class="settings">
+      <details title="Expand to adjust the advanced settings">
+        <summary style="cursor: pointer; font-size: 16px;">Advanced Settings</summary>
+        <div class="settings-panel">
+          <div>
+            <label for="toleranceSlider" title="Adjust background color removal sensitivity">Tolerance:</label>
+            <input type="range" id="toleranceSlider" min="0" max="200" step="1" value="40" title="Adjust background color removal sensitivity">
+            <span class="value-display" id="toleranceValue" title="Current tolerance value">40</span>
+          </div>
+          <div style="margin-top: 10px;">
+            <label for="blackThresholdSlider" title="Adjust how strictly black is preserved">Threshold:</label>
+            <input type="range" id="blackThresholdSlider" min="0" max="200" step="1" value="50" title="Adjust how strictly black is preserved">
+            <span class="value-display" id="blackThresholdValue" title="Current black threshold value">50</span>
+          </div>
+        </div>
+      </details>
+    </div>
+    <div class="image-container">
+      <div class="preview" title="Shows the original uploaded image">
+        <h3>Original Image</h3>
+        <canvas id="originalCanvas"></canvas>
+      </div>
+      <div class="preview" title="Shows the processed image with background removed">
+        <h3>Processed Image</h3>
+        <canvas id="outputCanvas"></canvas>
+      </div>
+    </div>
+    <div id="downloadButton" title="Click to download the processed image as a PNG">
+      <a id="downloadLink" href="#" download="background_removed.png">Download Processed Image</a>
+    </div>
+  </div>
+  <div class="social-links">
+    <a href="https://x.com/Recoverrr" target="_blank" rel="noopener" title="Visit my Twitter profile">
+      <img id="twitterImg" src="assets/twitterLogo.png" alt="Twitter Logo">
+    </a>
+    <a href="https://github.com/Recoverrrr" target="_blank" rel="noopener" title="Visit my GitHub profile">
+      <img id="githubImg" src="assets/githubLogo.png" alt="GitHub Logo">
+    </a>
+    <span class="version" style="font-family: 'Super Normal', monospace, sans-serif; margin-left: auto;">
+      v 1.00.01
+    </span>
+  </div>
+  <script>
+    let originalImage = new Image();
+    const imageUpload = document.getElementById('imageUpload'),
+          processButton = document.getElementById('processButton'),
+          originalCanvas = document.getElementById('originalCanvas'),
+          outputCanvas = document.getElementById('outputCanvas'),
+          downloadButtonDiv = document.getElementById('downloadButton'),
+          downloadLink = document.getElementById('downloadLink'),
+          toleranceSlider = document.getElementById('toleranceSlider'),
+          toleranceValue = document.getElementById('toleranceValue'),
+          blackThresholdSlider = document.getElementById('blackThresholdSlider'),
+          blackThresholdValue = document.getElementById('blackThresholdValue'),
+          toggleDarkModeBtn = document.getElementById('toggleDarkMode'),
+          twitterImg = document.getElementById('twitterImg'),
+          githubImg = document.getElementById('githubImg'),
+          spinner = document.getElementById('spinner');
+    
+    const originalCtx = originalCanvas.getContext('2d'),
+          outputCtx = outputCanvas.getContext('2d');
+    
+    let tolerance = 40, blackThreshold = 50;
+    
+    function setControlsDisabled(state) {
+      processButton.disabled = state;
+      imageUpload.disabled = state;
+      toleranceSlider.disabled = state;
+      blackThresholdSlider.disabled = state;
+    }
+    
+    toggleDarkModeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        twitterImg.src = 'assets/twitterDark.png';
+        githubImg.src = 'assets/githubDark.png';
+      } else {
+        twitterImg.src = 'assets/twitterLogo.png';
+        githubImg.src = 'assets/githubLogo.png';
+      }
+    });
+    
+    toleranceSlider.addEventListener('input', function() {
+      tolerance = parseInt(this.value, 10);
+      toleranceValue.textContent = tolerance;
+    });
+    
+    blackThresholdSlider.addEventListener('input', function() {
+      blackThreshold = parseInt(this.value, 10);
+      blackThresholdValue.textContent = blackThreshold;
+    });
+    
+    function processFile(file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Please upload a valid image file.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        originalImage.onload = function() {
+          originalCanvas.width = originalImage.width;
+          originalCanvas.height = originalImage.height;
+          outputCanvas.width = originalImage.width;
+          outputCanvas.height = originalImage.height;
+          originalCtx.drawImage(originalImage, 0, 0);
+          outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+          downloadButtonDiv.style.display = 'none';
+        };
+        originalImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    imageUpload.addEventListener('change', function(){
+      if (this.files && this.files[0]) {
+        processFile(this.files[0]);
+      }
+    });
+    
+    document.addEventListener('dragover', function(e) {
+      e.preventDefault();
+    });
+    
+    document.addEventListener('drop', function(e) {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processFile(e.dataTransfer.files[0]);
+      }
+    });
+    
+    function colorDistance(r1, g1, b1, r2, g2, b2) {
+      return Math.sqrt((r1 - r2)**2 + (g1 - g2)**2 + (b1 - b2)**2);
+    }
+    
+    function isNearBlack(r, g, b, threshold) {
+      return colorDistance(r, g, b, 0, 0, 0) < threshold;
+    }
+    
+    function floodFillBackground(imageData, bgColor, width, height, tolerance, blackThreshold) {
+      const data = imageData.data, visited = new Uint8Array(width * height),
+            [bgR, bgG, bgB] = bgColor,
+            getIndex = (x, y) => (y * width + x) * 4;
+      function canFill(x, y) {
+        const idx = getIndex(x, y), r = data[idx], g = data[idx+1], b = data[idx+2];
+        return !isNearBlack(r, g, b, blackThreshold) && colorDistance(r, g, b, bgR, bgG, bgB) < tolerance;
+      }
+      const queue = [];
+      function tryAdd(x, y) {
+        if (canFill(x, y)) {
+          visited[y * width + x] = 1;
+          queue.push({x, y});
+        }
+      }
+      for (let x = 0; x < width; x++) {
+        tryAdd(x, 0);
+        tryAdd(x, height - 1);
+      }
+      for (let y = 0; y < height; y++) {
+        tryAdd(0, y);
+        tryAdd(width - 1, y);
+      }
+      const directions = [{dx:1, dy:0}, {dx:-1, dy:0}, {dx:0, dy:1}, {dx:0, dy:-1},
+                          {dx:1, dy:1}, {dx:1, dy:-1}, {dx:-1, dy:1}, {dx:-1, dy:-1}];
+      while (queue.length) {
+        const {x, y} = queue.shift();
+        for (const {dx, dy} of directions) {
+          const nx = x + dx, ny = y + dy;
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited[ny * width + nx] && canFill(nx, ny)) {
+            visited[ny * width + nx] = 1;
+            queue.push({x: nx, y: ny});
+          }
+        }
+      }
+      for (let i = 0; i < visited.length; i++) {
+        if (visited[i]) data[i * 4 + 3] = 0;
+      }
+    }
+    
+    processButton.addEventListener('click', function(){
+      if (!originalImage.src) {
+        alert('Please upload an image first.');
+        return;
+      }
+      setControlsDisabled(true);
+      spinner.style.display = 'block';
+      try {
+        const topLeft = originalCtx.getImageData(0, 0, 1, 1).data,
+              imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+        floodFillBackground(imageData, [topLeft[0], topLeft[1], topLeft[2]], originalCanvas.width, originalCanvas.height, tolerance, blackThreshold);
+        outputCtx.putImageData(imageData, 0, 0);
+        downloadLink.href = outputCanvas.toDataURL('image/png');
+        downloadButtonDiv.style.display = 'block';
+      } catch (error) {
+        alert('An error occurred during processing.');
+        console.error(error);
+      }
+      spinner.style.display = 'none';
+      setControlsDisabled(false);
+    });
+  </script>
+</body>
+</html>
