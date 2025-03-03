@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>BG Sniper 𖣓</title>
+  <link rel="icon" type="image/x-icon" href="assets/favIcon.ico">
+
   <style>
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -421,7 +423,14 @@
       try {
         const topLeft = originalCtx.getImageData(0, 0, 1, 1).data,
               imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
-        floodFillBackground(imageData, [topLeft[0], topLeft[1], topLeft[2]], originalCanvas.width, originalCanvas.height, tolerance, blackThreshold);
+        floodFillBackground(
+          imageData,
+          [topLeft[0], topLeft[1], topLeft[2]],
+          originalCanvas.width,
+          originalCanvas.height,
+          tolerance,
+          blackThreshold
+        );
         outputCtx.putImageData(imageData, 0, 0);
         downloadLink.href = outputCanvas.toDataURL('image/png');
         downloadButtonDiv.style.display = 'block';
